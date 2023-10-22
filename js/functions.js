@@ -44,3 +44,21 @@ returnNumber('а я томат');
 returnNumber(2023);
 returnNumber(-1);
 returnNumber(1.5);
+
+//доп задание
+function TimeVisitAnswer(dayStart, dayEnd, visitStart, visitLength) {
+  dayEnd = dayEnd.split(':');
+  dayStart = dayStart.split(':');
+  visitStart = visitStart.split(':');
+  const probably = visitStart[0]*60 + +visitStart[1] + +visitLength;
+  if (dayStart[0]*60 + +dayStart[1] > visitStart[0]*60 + +visitStart[1]) {
+    return false;
+  }
+  return probably <= (dayEnd[0]*60 + +dayEnd[1]);
+}
+
+TimeVisitAnswer('08:00', '17:30', '14:00', 90);
+TimeVisitAnswer('8:0', '10:0', '8:0', 120);
+TimeVisitAnswer('08:00', '14:30', '14:00', 90);
+TimeVisitAnswer('14:00', '17:30', '08:0', 90);
+TimeVisitAnswer('8:00', '17:30', '08:00', 900);
