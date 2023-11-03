@@ -1,1 +1,2 @@
-import {createPhoto} from './generate.js';
+// import {createPhoto} from './generate.js';
+// createPhoto();
