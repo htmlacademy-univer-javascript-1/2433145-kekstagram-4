@@ -1,1 +1,2 @@
-import './generate.js';
+import {drawSmall} from './draw.js';
+drawSmall();

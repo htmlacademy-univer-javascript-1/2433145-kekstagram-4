@@ -30,6 +30,12 @@ function getPhoto () {
   };
 }
 
-for (let index = 0; index < 25; index++){
-  photos.push(getPhoto());
+function createPhoto () {
+  for (let index = 0; index < 25; index++){
+    photos.push(getPhoto());
+  }
+  return photos;
 }
+
+export {createPhoto};
+
