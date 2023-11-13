@@ -1,2 +1,2 @@
-// import {createPhoto} from './generate.js';
-// createPhoto();
+import {drawSmall} from './draw.js';
+drawSmall();

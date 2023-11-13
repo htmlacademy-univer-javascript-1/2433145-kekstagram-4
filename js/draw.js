@@ -8,15 +8,15 @@ const picturesContainer = document.querySelector('.pictures');
 function drawSmall () {
   photos.forEach((photo) => {
     const newElem = newPictureTemplate.cloneNode(true);
-    newElem.children[0].src = photo.url;
-    newElem.children[0].alt = photo.description;
-    const photoDescription = newElem.querySelector('.picture__info');
-    photoDescription.children[0].textContent = photo.comments.length;
-    photoDescription.children[1].textContent = photo.likes;
+    newElem.querySelector('.picture__img').src = photo.url;
+    newElem.querySelector('.picture__img').alt = photo.description;
+    newElem.querySelector('.picture__comments').textContent = photo.comments.length;
+    newElem.querySelector('.picture__likes').textContent = photo.likes;
 
     picturesContainer.append(newElem);
   });
 }
 
-drawSmall();
+
+export {drawSmall};
 
