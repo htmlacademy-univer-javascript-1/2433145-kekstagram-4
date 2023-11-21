@@ -14,7 +14,6 @@ uploadingImgInput.addEventListener('change', () => {
 
 closeBtn.addEventListener('click', () => {
   closeFullPhoto(overlayImg);
-  uploadingImgInput.removeAttribute('wft-id');
 });
 
 document.addEventListener('keydown', (evt) => {
@@ -22,7 +21,6 @@ document.addEventListener('keydown', (evt) => {
     const activeElement = document.activeElement.attributes.type;
     if (typeof(activeElement) === 'undefined'){
       closeFullPhoto(overlayImg);
-      uploadingImgInput.removeAttribute('wft-id');
     }
     else {
       if (activeElement.value === 'text') {
@@ -30,7 +28,6 @@ document.addEventListener('keydown', (evt) => {
       }
       else {
         closeFullPhoto(overlayImg);
-        uploadingImgInput.removeAttribute('wft-id');
       }
     }
   }
@@ -83,13 +80,3 @@ form.addEventListener('submit', (evt) => {
     closeFullPhoto(overlayImg);
   }
 });
-
-// commentsField.addEventListener('focus', (evt) => {
-//   console.log('ok');
-//   evt.stopPropagation();
-// });
-
-// hashtagField.addEventListener('focus', (evt) => {
-//   evt.stopPropagation();
-// });
-
