@@ -11,4 +11,9 @@ function getUniqRandomNumber (max, min, arr) {
   return Math.round(current);
 }
 
-export {getRandomNumber, getUniqRandomNumber};
+function closeFullPhoto(openedWindow) {
+  openedWindow.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+}
+
+export {getRandomNumber, getUniqRandomNumber, closeFullPhoto};
