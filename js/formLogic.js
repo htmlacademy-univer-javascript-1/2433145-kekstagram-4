@@ -14,6 +14,7 @@ uploadingImgInput.addEventListener('change', () => {
 
 closeBtn.addEventListener('click', () => {
   closeFullPhoto(overlayImg);
+  uploadingImgInput.value = '';
 });
 
 document.addEventListener('keydown', (evt) => {
@@ -21,6 +22,7 @@ document.addEventListener('keydown', (evt) => {
     const activeElement = document.activeElement.attributes.type;
     if (typeof(activeElement) === 'undefined'){
       closeFullPhoto(overlayImg);
+      uploadingImgInput.value = '';
     }
     else {
       if (activeElement.value === 'text') {
@@ -28,6 +30,7 @@ document.addEventListener('keydown', (evt) => {
       }
       else {
         closeFullPhoto(overlayImg);
+        uploadingImgInput.value = '';
       }
     }
   }
