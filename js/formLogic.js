@@ -39,8 +39,6 @@ document.addEventListener('keydown', (evt) => {
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
-  errorClass: 'img-upload__field-wrapper--invalid',
-  successClass: 'img-upload__field-wrapper--valid',
   errorTextParent: 'img-upload__field-wrapper'
 }, true);
 
