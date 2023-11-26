@@ -26,8 +26,8 @@ scaleBiggerBtn.addEventListener('click', () => {
 });
 
 noUiSlider.create(sliderContainer, {
-  start: 0,
-  connect: true,
+  start: 1,
+  connect: 'lower',
   step: 0.1,
   range: {
     'min': 0,
@@ -53,14 +53,14 @@ filterItems.forEach((filter) => {
       filter.addEventListener('click', () => {
         sliderContainer.parentNode.classList.remove('hidden');
         filterName = 'grayscale ';
-        sliderContainer.noUiSlider.updateOptions({ start: 0 });
+        sliderContainer.noUiSlider.updateOptions({ start: 1 });
       });
       break;
     case 'sepia':
       filter.addEventListener('click', () => {
         sliderContainer.parentNode.classList.remove('hidden');
         filterName = 'sepia ';
-        sliderContainer.noUiSlider.updateOptions({ start: 0 });
+        sliderContainer.noUiSlider.updateOptions({ start: 1 });
       });
       break;
     case 'marvin':
@@ -69,7 +69,7 @@ filterItems.forEach((filter) => {
         filterName = 'invert %';
         sliderContainer.noUiSlider.updateOptions({
           step: 1,
-          start: 0,
+          start: 100,
           range: { 'min': 0, 'max': 100 }
         });
       });
@@ -79,7 +79,7 @@ filterItems.forEach((filter) => {
         sliderContainer.parentNode.classList.remove('hidden');
         filterName = 'blur px';
         sliderContainer.noUiSlider.updateOptions({
-          start: 0,
+          start: 3,
           range: { 'min': 0, 'max': 3 }
         });
       });
@@ -89,7 +89,7 @@ filterItems.forEach((filter) => {
         sliderContainer.parentNode.classList.remove('hidden');
         filterName = 'brightness ';
         sliderContainer.noUiSlider.updateOptions({
-          start: 1,
+          start: 3,
           range: { 'min': 1, 'max': 3}
         });
       });
