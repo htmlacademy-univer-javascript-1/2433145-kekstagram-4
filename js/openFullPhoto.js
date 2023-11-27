@@ -1,3 +1,5 @@
+import { closeFullPhoto } from './util.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const comments = bigPicture.querySelector('.social__comments');
 const closeBtn = document.querySelector('.big-picture__cancel');
@@ -8,6 +10,7 @@ const fullImg = bigPicture.querySelector('.big-picture__img');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const openedCount = bigPicture.querySelector('.comments-count-now');
 const descriptionImg = bigPicture.querySelector('.social__caption');
+const stackOfComments = 5;
 
 function openFullPhoto (photoInfo, photo) {
   photo.addEventListener('click', () => {
@@ -33,19 +36,28 @@ function loadComments(photoInfo) {
     newComment.classList.add('hidden');
     comments.append(newComment);
   });
-  for (let i = 0; i < 5; i++) {
-    comments.children[i].classList.remove('hidden');
+  if (photoInfo.comments.length < stackOfComments) {
+    for (let i = 0; i < photoInfo.comments.length; i++) {
+      comments.children[i].classList.remove('hidden');
+    }
+    openedCount.textContent = photoInfo.comments.length;
+    loadCommentsBtn.classList.add('hidden');
+  }
+  else {
+    for (let i = 0; i < stackOfComments; i++) {
+      comments.children[i].classList.remove('hidden');
+    }
   }
 }
 
 loadCommentsBtn.addEventListener('click', () => {
   const needComments = +bigPicture.querySelector('.comments-count-now').textContent;
   const photosCount = +commentsCount.textContent;
-  if (needComments + 5 < photosCount) {
-    for (let i = needComments; i < needComments + 5; i++) {
+  if (needComments + stackOfComments < photosCount) {
+    for (let i = needComments; i < needComments + stackOfComments; i++) {
       comments.children[i].classList.remove('hidden');
     }
-    openedCount.textContent = needComments + 5;
+    openedCount.textContent = needComments + stackOfComments;
     loadCommentsBtn.classList.remove('hidden');
   }
   else {
@@ -57,18 +69,13 @@ loadCommentsBtn.addEventListener('click', () => {
   }
 });
 
-function closeFullPhoto() {
-  bigPicture.classList.add('hidden');
-  document.body.classList.remove('modal-open');
-}
-
 closeBtn.addEventListener('click', () => {
-  closeFullPhoto();
+  closeFullPhoto(bigPicture);
 });
 
 document.addEventListener('keydown', (evt) => {
   if(evt.keyCode === 27) {
-    closeFullPhoto();
+    closeFullPhoto(bigPicture);
   }
 });
 
