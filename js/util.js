@@ -16,4 +16,13 @@ function closeFullPhoto(openedWindow) {
   document.body.classList.remove('modal-open');
 }
 
-export {getRandomNumber, getUniqRandomNumber, closeFullPhoto};
+function isEscapeKey(evt){
+  if(evt.keyCode === 27){
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey};
