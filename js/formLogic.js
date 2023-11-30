@@ -1,4 +1,5 @@
-import { closeFullPhoto } from './util.js';
+import { closeFullPhoto, isEscapeKey } from './util.js';
+import { resetFilters } from './util.js';
 
 const form = document.querySelector('.img-upload__form');
 const uploadingImgInput = form.querySelector('.img-upload__input');
@@ -6,6 +7,11 @@ const closeBtn = form.querySelector('.img-upload__cancel');
 const overlayImg = form.querySelector('.img-upload__overlay');
 const commentsField = form.querySelector('.text__description');
 const hashtagField = form.querySelector('.text__hashtags');
+const containerPreview = document.querySelector('.img-upload__preview');
+const imgPreview = containerPreview.querySelector('img');
+const sliderContainer = document.querySelector('.effect-level__slider');
+const HASHTAGCOUNT = 5;
+const MAXLENGTH = 140;
 
 uploadingImgInput.addEventListener('change', () => {
   overlayImg.classList.remove('hidden');
@@ -15,10 +21,11 @@ uploadingImgInput.addEventListener('change', () => {
 closeBtn.addEventListener('click', () => {
   closeFullPhoto(overlayImg);
   uploadingImgInput.value = '';
+  resetFilters (imgPreview, sliderContainer);
 });
 
 document.addEventListener('keydown', (evt) => {
-  if(evt.keyCode === 27) {
+  if(isEscapeKey(evt)) {
     const activeElement = document.activeElement.attributes.type;
     if (typeof(activeElement) === 'undefined'){
       closeFullPhoto(overlayImg);
@@ -43,7 +50,7 @@ const pristine = new Pristine(form, {
 }, true);
 
 function validateComment (value) {
-  return value.length <= 140;
+  return value.length <= MAXLENGTH;
 }
 pristine.addValidator(commentsField, validateComment, 'Комментарий до 140 символов');
 
@@ -56,7 +63,7 @@ function validateHashtag (value) {
     value.trim();
     const arr = value.split(' ');
     const tempArr = [];
-    if (arr.length > 5) {
+    if (arr.length > HASHTAGCOUNT) {
       res = false;
     }
     for (let i = 0; i < arr.length; i++){
@@ -73,7 +80,29 @@ function validateHashtag (value) {
   }
   return res;
 }
-pristine.addValidator(hashtagField, validateHashtag, 'Ошибка');
+
+function getErrorMessage() {
+  let errorMessage = '';
+  const arr = hashtagField.value.toLowerCase().trim().split(/\s+/);
+  const tempArr = [];
+  if (arr.length > HASHTAGCOUNT) {
+    errorMessage = 'Можно указать максимум 5 хэштегов';
+  }
+  for (let i = 0; i < arr.length; i++){
+    if(hashtag.test(arr[i]) === false){
+      errorMessage = 'Хэштег должен начинаться с решетки, не иметь заглавных букв и быть не более 20 символов';
+    }
+    if(tempArr.includes(arr[i])){
+      errorMessage = 'Хэштеги не могут повторяться';
+    }
+    else {
+      tempArr.push(arr[i]);
+    }
+  }
+  return errorMessage;
+}
+
+pristine.addValidator(hashtagField, validateHashtag, getErrorMessage);
 
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
