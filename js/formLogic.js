@@ -1,4 +1,5 @@
 import { closeFullPhoto, isEscapeKey } from './util.js';
+import { resetFilters } from './util.js';
 
 const form = document.querySelector('.img-upload__form');
 const uploadingImgInput = form.querySelector('.img-upload__input');
@@ -6,6 +7,9 @@ const closeBtn = form.querySelector('.img-upload__cancel');
 const overlayImg = form.querySelector('.img-upload__overlay');
 const commentsField = form.querySelector('.text__description');
 const hashtagField = form.querySelector('.text__hashtags');
+const containerPreview = document.querySelector('.img-upload__preview');
+const imgPreview = containerPreview.querySelector('img');
+const sliderContainer = document.querySelector('.effect-level__slider');
 const HASHTAGCOUNT = 5;
 const MAXLENGTH = 140;
 
@@ -17,6 +21,7 @@ uploadingImgInput.addEventListener('change', () => {
 closeBtn.addEventListener('click', () => {
   closeFullPhoto(overlayImg);
   uploadingImgInput.value = '';
+  resetFilters (imgPreview, sliderContainer);
 });
 
 document.addEventListener('keydown', (evt) => {

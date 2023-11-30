@@ -7,20 +7,21 @@ const sliderValue = document.querySelector('.effect-level__value');
 const sliderContainer = document.querySelector('.effect-level__slider');
 const filterItems = document.querySelectorAll('.effects__item');
 let filterName = '';
+const scaleStep = 25;
 sliderContainer.parentNode.classList.add('hidden');
 
 scaleSmallerBtn.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue - 25  >= 0) {
-    scaleInput.value = `${scaleInputValue - 25}%`;
+  if (scaleInputValue - scaleStep  >= 0) {
+    scaleInput.value = `${scaleInputValue - scaleStep}%`;
     imgPreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
 
 scaleBiggerBtn.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue + 25  <= 100) {
-    scaleInput.value = `${scaleInputValue + 25}%`;
+  if (scaleInputValue + scaleStep  <= 100) {
+    scaleInput.value = `${scaleInputValue + scaleStep}%`;
     imgPreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });

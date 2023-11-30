@@ -25,4 +25,19 @@ function isEscapeKey(evt){
   }
 }
 
-export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey};
+function resetFilters (imgPreview, sliderContainer) {
+  sliderContainer.noUiSlider.updateOptions({
+    start: 1,
+    connect: 'lower',
+    step: 0.1,
+    range: {
+      'min': 0,
+      'max': 1
+    }
+  });
+  imgPreview.style.removeProperty('transform');
+  imgPreview.style.removeProperty('filter');
+  sliderContainer.parentNode.classList.add('hidden');
+}
+
+export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey, resetFilters};
