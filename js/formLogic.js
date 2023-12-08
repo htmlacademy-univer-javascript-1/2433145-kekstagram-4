@@ -1,4 +1,4 @@
-import { closeFullPhoto, isEscapeKey } from './util.js';
+import { blockButton, closeFullPhoto, isEscapeKey, unblockButton } from './util.js';
 import { resetFilters } from './util.js';
 
 const form = document.querySelector('.img-upload__form');
@@ -16,11 +16,11 @@ const MAXLENGTH = 140;
 uploadingImgInput.addEventListener('change', () => {
   overlayImg.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  resetFilters (imgPreview, sliderContainer);
 });
 
 closeBtn.addEventListener('click', () => {
   closeFullPhoto(overlayImg);
-  uploadingImgInput.value = '';
   resetFilters (imgPreview, sliderContainer);
 });
 
@@ -105,8 +105,28 @@ function getErrorMessage() {
 pristine.addValidator(hashtagField, validateHashtag, getErrorMessage);
 
 form.addEventListener('submit', (evt) => {
+  console.log('валидация норм');
   evt.preventDefault();
+  console.log(pristine.validate());
   if (pristine.validate()) {
+    console.log('валидация норм');
+    blockButton();
+    fetch('https://29.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: new FormData(evt.target),
+      })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch(() => {
+        console.log('ERRORRRRRR');
+      })
+      .finally(unblockButton);
     closeFullPhoto(overlayImg);
+    resetFilters(imgPreview, sliderContainer);
   }
 });

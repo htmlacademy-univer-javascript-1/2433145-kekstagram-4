@@ -1,12 +1,10 @@
-import {createPhoto} from './generate.js';
 import {openFullPhoto} from './openFullPhoto.js';
 
-const photos = createPhoto();
 const pictureTemplate = document.querySelector('#picture').content;
 const newPictureTemplate = pictureTemplate.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
 
-function drawSmall () {
+function drawSmall (photos) {
   photos.forEach((photo) => {
     const newElem = newPictureTemplate.cloneNode(true);
     newElem.querySelector('.picture__img').src = photo.url;

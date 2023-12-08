@@ -26,6 +26,13 @@ function isEscapeKey(evt){
 }
 
 function resetFilters (imgPreview, sliderContainer) {
+  const scaleInput = document.querySelector('.scale__control--value');
+  const form = document.querySelector('.img-upload__form');
+  const uploadingImgInput = form.querySelector('.img-upload__input');
+  const commentsField = form.querySelector('.text__description');
+  const hashtagField = form.querySelector('.text__hashtags');
+  const filterOrigin = document.querySelector('.effects__item');
+
   sliderContainer.noUiSlider.updateOptions({
     start: 1,
     connect: 'lower',
@@ -37,7 +44,37 @@ function resetFilters (imgPreview, sliderContainer) {
   });
   imgPreview.style.removeProperty('transform');
   imgPreview.style.removeProperty('filter');
+  scaleInput.value = '100%';
+  uploadingImgInput.value = '';
+  commentsField.value ='';
+  hashtagField.value = '';
+  filterOrigin.querySelector('.effects__radio').checked = 'true';
   sliderContainer.parentNode.classList.add('hidden');
 }
 
-export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey, resetFilters};
+function errorMessage (text) {
+  const errorBlock = document.querySelector('#serverError').content.querySelector('.error');
+  errorBlock.classList.add('serverError');
+  const errorText = errorBlock.querySelector('h2');
+  errorText.textContent = text;
+  document.body.append(errorBlock);
+}
+
+function closeError () {
+  const errorBlock = document.querySelector('.serverError');
+  errorBlock.classList.add('hidden');
+}
+
+function blockButton() {
+  const button = document.querySelector('.social__footer-btn');
+  button.textContent = 'В публикации...';
+  button.disabled = 'true';
+}
+
+function unblockButton() {
+  const button = document.querySelector('.social__footer-btn');
+  button.textContent = 'Опубликовать';
+  button.disabled = 'false';
+}
+
+export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey, resetFilters, errorMessage, closeError, blockButton, unblockButton};
