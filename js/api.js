@@ -1,5 +1,5 @@
 import {drawSmall} from './draw.js';
-import { closeError, errorMessage } from './util.js';
+import { closeError, errorServerMessage } from './util.js';
 
 fetch('https://29.javascript.pages.academy/kekstagram/data')
   .then((response) => {
@@ -12,7 +12,7 @@ fetch('https://29.javascript.pages.academy/kekstagram/data')
     drawSmall(data);
   })
   .catch(() => {
-    errorMessage('Не получили ответ от сервера');
+    errorServerMessage('Не получили ответ от сервера');
     setTimeout(() => {closeError();}, 2000);
   });
 
