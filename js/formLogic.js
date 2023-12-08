@@ -1,5 +1,6 @@
 import { closeFullPhoto, isEscapeKey, blockButton, unblockButton, sendSuccessMessage, sendErrorMessage } from './util.js';
 import { resetFilters } from './util.js';
+import { sendData } from './api.js';
 
 const form = document.querySelector('.img-upload__form');
 const uploadingImgInput = form.querySelector('.img-upload__input');
@@ -108,11 +109,7 @@ form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (pristine.validate()) {
     blockButton();
-    fetch('https://29.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: new FormData(evt.target),
-      })
+    sendData(new FormData(evt.target))
       .then((response) => {
         if(response.ok) {
           sendSuccessMessage();

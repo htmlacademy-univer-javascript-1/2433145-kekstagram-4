@@ -1,19 +1,17 @@
-import {drawSmall} from './draw.js';
-import { closeError, errorServerMessage } from './util.js';
+const getData = () =>
+  fetch('https://29.javascript.pages.academy/kekstagram/data')
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error();
+    });
 
-fetch('https://29.javascript.pages.academy/kekstagram/data')
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    }
-    throw new Error();
-  })
-  .then((data) => {
-    drawSmall(data);
-  })
-  .catch(() => {
-    errorServerMessage('Не получили ответ от сервера');
-    setTimeout(() => {closeError();}, 2000);
-  });
+const sendData = (body) =>
+  fetch('https://29.javascript.pages.academy/kekstagram',
+    {
+      method: 'POST',
+      body: body,
+    });
 
-export {};
+export {sendData, getData};
