@@ -77,52 +77,64 @@ function unblockButton() {
   button.removeAttribute('disabled');
 }
 
+const successMsg = document.querySelector('#success').content.querySelector('.success');
+const newSuccessMsg = successMsg.cloneNode(true);
+const successBtn = newSuccessMsg.querySelector('.success__button');
+const errorMsg = document.querySelector('#error').content.querySelector('.error');
+const newErrorMsg = errorMsg.cloneNode(true);
+const errorBtn = newErrorMsg.querySelector('.error__button');
+
 function sendSuccessMessage() {
-  const successMsg = document.querySelector('#success').content.querySelector('.success');
-  const newSuccessMsg = successMsg.cloneNode(true);
   document.body.append(newSuccessMsg);
-  const successBtn = newSuccessMsg.querySelector('.success__button');
 
-  successBtn.addEventListener('click', () => {
-    newSuccessMsg.remove();
-  });
+  successBtn.addEventListener('click', clickBtnHandler);
+  document.addEventListener('keydown', escOnMsgHandler);
+  document.addEventListener('click', outOfSpaceHandler);
+}
 
-  document.addEventListener('keydown', (evt) => {
-    if(isEscapeKey(evt)) {
-      newSuccessMsg.remove();
-    }
-  });
+function outOfSpaceHandler (evt) {
+  const emptySpaceSuccess = newSuccessMsg.querySelector('.success__inner');
+  const emptySpaceError = newErrorMsg.querySelector('.error__inner');
+  if (!emptySpaceSuccess.contains(evt.target) || !emptySpaceError.contains(evt.target)){
+    closeMessage(newSuccessMsg);
+    closeMessage(newErrorMsg);
+  }
+}
 
-  document.addEventListener('click', (evt) => {
-    const emptySpace = newSuccessMsg.querySelector('.success__inner');
-    if (!emptySpace.contains(evt.target)){
-      newSuccessMsg.remove();
-    }
-  });
+function escOnMsgHandler (evt) {
+  if(isEscapeKey(evt)) {
+    closeMessage(newSuccessMsg);
+    closeMessage(newErrorMsg);
+  }
+}
+
+function clickBtnHandler () {
+  closeMessage(newSuccessMsg);
+  closeMessage(newErrorMsg);
+}
+
+function closeMessage (newMsg) {
+  newMsg.remove();
+  document.removeEventListener('click', outOfSpaceHandler);
+  document.removeEventListener('keydown', escOnMsgHandler);
+  successBtn.removeEventListener('click', clickBtnHandler);
+  errorBtn.removeEventListener('click', clickBtnHandler);
 }
 
 function sendErrorMessage () {
-  const errorMsg = document.querySelector('#error').content.querySelector('.error');
-  const newErrorMsg = errorMsg.cloneNode(true);
   document.body.append(newErrorMsg);
-  const errorBtn = newErrorMsg.querySelector('.error__button');
 
-  errorBtn.addEventListener('click', () => {
-    newErrorMsg.remove();
-  });
-
-  document.addEventListener('keydown', (evt) => {
-    if(isEscapeKey(evt)) {
-      newErrorMsg.remove();
-    }
-  });
-
-  document.addEventListener('click', (evt) => {
-    const emptySpace = newErrorMsg.querySelector('.error__inner');
-    if (!emptySpace.contains(evt.target)){
-      newErrorMsg.remove();
-    }
-  });
+  errorBtn.addEventListener('click', clickBtnHandler);
+  document.addEventListener('keydown', escOnMsgHandler);
+  document.addEventListener('click', outOfSpaceHandler);
 }
 
-export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey, resetFilters, errorServerMessage, closeError, blockButton, unblockButton, sendSuccessMessage, sendErrorMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutID;
+  return (...rest) => {
+    clearTimeout(timeoutID);
+    timeoutID = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {getRandomNumber, getUniqRandomNumber, closeFullPhoto, isEscapeKey, resetFilters, errorServerMessage, closeError, blockButton, unblockButton, sendSuccessMessage, sendErrorMessage, debounce};

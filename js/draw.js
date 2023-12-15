@@ -1,8 +1,11 @@
 import {openFullPhoto} from './openFullPhoto.js';
+import {sortPhotos} from './photosSort.js';
+import { debounce } from './util.js';
 
 const pictureTemplate = document.querySelector('#picture').content;
 const newPictureTemplate = pictureTemplate.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
+const RERENDER_DELAY = 500;
 
 function drawSmall (photos) {
   photos.forEach((photo) => {
@@ -13,6 +16,13 @@ function drawSmall (photos) {
     newElem.querySelector('.picture__likes').textContent = photo.likes;
     picturesContainer.append(newElem);
     openFullPhoto(photo, newElem);
+  });
+  sortPhotos(debounce(renderNewPhotos, RERENDER_DELAY));
+}
+
+function renderNewPhotos (newPhotos) {
+  newPhotos.forEach((pic) => {
+    picturesContainer.appendChild(pic);
   });
 }
 
