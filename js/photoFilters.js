@@ -1,3 +1,4 @@
+const SCALESTEP = 25;
 const scaleSmallerBtn = document.querySelector('.scale__control--smaller');
 const scaleBiggerBtn = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
@@ -7,21 +8,20 @@ const sliderValue = document.querySelector('.effect-level__value');
 const sliderContainer = document.querySelector('.effect-level__slider');
 const filterItems = document.querySelectorAll('.effects__item');
 let filterName = '';
-const scaleStep = 25;
 sliderContainer.parentNode.classList.add('hidden');
 
 scaleSmallerBtn.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue - scaleStep  >= 0) {
-    scaleInput.value = `${scaleInputValue - scaleStep}%`;
+  if (scaleInputValue - SCALESTEP  >= 0) {
+    scaleInput.value = `${scaleInputValue - SCALESTEP}%`;
     imgPreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
 
 scaleBiggerBtn.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue + scaleStep  <= 100) {
-    scaleInput.value = `${scaleInputValue + scaleStep}%`;
+  if (scaleInputValue + SCALESTEP  <= 100) {
+    scaleInput.value = `${scaleInputValue + SCALESTEP}%`;
     imgPreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
