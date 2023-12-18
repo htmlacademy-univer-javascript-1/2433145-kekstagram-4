@@ -2,6 +2,10 @@ import { closeFullPhoto, isEscapeKey, blockButton, unblockButton, sendSuccessMes
 import { resetFilters } from './util.js';
 import { sendData } from './api.js';
 
+const HASHTAGCOUNT = 5;
+const MAXLENGTH = 140;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 const form = document.querySelector('.img-upload__form');
 const uploadingImgInput = form.querySelector('.img-upload__input');
 const closeBtn = form.querySelector('.img-upload__cancel');
@@ -11,8 +15,7 @@ const hashtagField = form.querySelector('.text__hashtags');
 const containerPreview = document.querySelector('.img-upload__preview');
 const imgPreview = containerPreview.querySelector('img');
 const sliderContainer = document.querySelector('.effect-level__slider');
-const HASHTAGCOUNT = 5;
-const MAXLENGTH = 140;
+const fileChooser = document.querySelector('.img-upload__input');
 
 uploadingImgInput.addEventListener('change', () => {
   overlayImg.classList.remove('hidden');
@@ -71,11 +74,11 @@ function validateHashtag (value) {
       if(hashtag.test(arr[i]) === false){
         res = false;
       }
-      if(tempArr.includes(arr[i])){
+      if(tempArr.includes(arr[i].toLowerCase())){
         res = false;
       }
       else {
-        tempArr.push(arr[i]);
+        tempArr.push(arr[i].toLowerCase());
       }
     }
   }
@@ -127,15 +130,11 @@ form.addEventListener('submit', (evt) => {
   }
 });
 
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-const fileChooser = document.querySelector('.img-upload__input');
-
 fileChooser.addEventListener('change', uploadFileHandler);
 
 function uploadFileHandler() {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
-
   const matches = FILE_TYPES.some((extention) => fileName.endsWith(extention));
 
   if (matches) {

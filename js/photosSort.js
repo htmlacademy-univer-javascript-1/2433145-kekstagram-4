@@ -1,8 +1,8 @@
+const PHOTO_COUNT = 10;
 const picturesContainer = document.querySelector('.pictures');
 const imgUpload = document.querySelector('.img-upload');
 const filterContainer = document.querySelector('.img-filters');
 const filter = filterContainer.querySelector('.img-filters__form');
-const PHOTO_COUNT = 10;
 
 const comparePhotos = (photoA, photoB) => {
   const rankA = photoA.querySelector('.picture__comments').innerHTML;

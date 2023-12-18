@@ -1,5 +1,7 @@
 import { closeFullPhoto } from './util.js';
 
+const STACKOFCOMMENTS = 5;
+
 const bigPicture = document.querySelector('.big-picture');
 const comments = bigPicture.querySelector('.social__comments');
 const closeBtn = document.querySelector('.big-picture__cancel');
@@ -10,7 +12,6 @@ const fullImg = bigPicture.querySelector('.big-picture__img');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const openedCount = bigPicture.querySelector('.comments-count-now');
 const descriptionImg = bigPicture.querySelector('.social__caption');
-const stackOfComments = 5;
 
 function openFullPhoto (photoInfo, photo) {
   photo.addEventListener('click', () => {
@@ -36,7 +37,7 @@ function loadComments(photoInfo) {
     newComment.classList.add('hidden');
     comments.append(newComment);
   });
-  if (photoInfo.comments.length < stackOfComments) {
+  if (photoInfo.comments.length < STACKOFCOMMENTS) {
     for (let i = 0; i < photoInfo.comments.length; i++) {
       comments.children[i].classList.remove('hidden');
     }
@@ -44,7 +45,7 @@ function loadComments(photoInfo) {
     loadCommentsBtn.classList.add('hidden');
   }
   else {
-    for (let i = 0; i < stackOfComments; i++) {
+    for (let i = 0; i < STACKOFCOMMENTS; i++) {
       comments.children[i].classList.remove('hidden');
     }
   }
@@ -53,11 +54,11 @@ function loadComments(photoInfo) {
 loadCommentsBtn.addEventListener('click', () => {
   const needComments = +bigPicture.querySelector('.comments-count-now').textContent;
   const photosCount = +commentsCount.textContent;
-  if (needComments + stackOfComments < photosCount) {
-    for (let i = needComments; i < needComments + stackOfComments; i++) {
+  if (needComments + STACKOFCOMMENTS < photosCount) {
+    for (let i = needComments; i < needComments + STACKOFCOMMENTS; i++) {
       comments.children[i].classList.remove('hidden');
     }
-    openedCount.textContent = needComments + stackOfComments;
+    openedCount.textContent = needComments + STACKOFCOMMENTS;
     loadCommentsBtn.classList.remove('hidden');
   }
   else {
