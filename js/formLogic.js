@@ -126,3 +126,19 @@ form.addEventListener('submit', (evt) => {
     closeFullPhoto(overlayImg);
   }
 });
+
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const fileChooser = document.querySelector('.img-upload__input');
+
+fileChooser.addEventListener('change', uploadFileHandler);
+
+function uploadFileHandler() {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((extention) => fileName.endsWith(extention));
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(file);
+  }
+}
