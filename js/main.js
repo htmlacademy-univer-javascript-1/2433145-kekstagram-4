@@ -1,5 +1,5 @@
-import './formLogic.js';
-import './photoFilters.js';
+import './form-logic.js';
+import './photo-filters.js';
 import { getData } from './api.js';
 import { drawSmall } from './draw.js';
 import { errorServerMessage, closeError } from './util.js';
