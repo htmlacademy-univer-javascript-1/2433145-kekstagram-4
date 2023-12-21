@@ -2,8 +2,8 @@ import { closeFullPhoto, isEscapeKey, blockButton, unblockButton, sendSuccessMes
 import { resetFilters } from './util.js';
 import { sendData } from './api.js';
 
-const HASHTAGCOUNT = 5;
-const MAXLENGTH = 140;
+const HASHTAG_COUNT = 5;
+const MAX_LENGTH = 140;
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const form = document.querySelector('.img-upload__form');
@@ -15,36 +15,39 @@ const hashtagField = form.querySelector('.text__hashtags');
 const containerPreview = document.querySelector('.img-upload__preview');
 const imgPreview = containerPreview.querySelector('img');
 const sliderContainer = document.querySelector('.effect-level__slider');
-const fileChooser = document.querySelector('.img-upload__input');
+const hashtagInput = form.querySelector('.text__hashtags');
+const commentInput = form.querySelector('.text__description');
+
+const resetCloseByEscape = (evt) => evt.stopPropagation();
+
+const closeForm = () => {
+  overlayImg.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+
+  form.removeEventListener('submit', formHandler);
+  closeBtn.removeEventListener('click', closeForm);
+  document.removeEventListener('keydown', closeFormByEscape);
+  hashtagInput.removeEventListener('keydown', resetCloseByEscape);
+  commentInput.removeEventListener('keydown', resetCloseByEscape);
+
+  resetFilters(imgPreview, sliderContainer);
+};
+
+function closeFormByEscape (evt) {
+  if (isEscapeKey(evt)) {
+    closeForm();
+  }
+}
 
 uploadingImgInput.addEventListener('change', () => {
   overlayImg.classList.remove('hidden');
   document.body.classList.add('modal-open');
-});
 
-closeBtn.addEventListener('click', () => {
-  closeFullPhoto(overlayImg);
-  uploadingImgInput.value = '';
-  resetFilters (imgPreview, sliderContainer);
-});
-
-document.addEventListener('keydown', (evt) => {
-  if(isEscapeKey(evt)) {
-    const activeElement = document.activeElement.attributes.type;
-    if (typeof(activeElement) === 'undefined'){
-      closeFullPhoto(overlayImg);
-      uploadingImgInput.value = '';
-    }
-    else {
-      if (activeElement.value === 'text') {
-        evt.stopPropagation();
-      }
-      else {
-        closeFullPhoto(overlayImg);
-        uploadingImgInput.value = '';
-      }
-    }
-  }
+  form.addEventListener('submit', formHandler);
+  closeBtn.addEventListener('click', closeForm);
+  document.addEventListener('keydown', closeFormByEscape);
+  hashtagInput.addEventListener('keydown', resetCloseByEscape);
+  commentInput.addEventListener('keydown', resetCloseByEscape);
 });
 
 const hashtag = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -54,7 +57,7 @@ const pristine = new Pristine(form, {
 }, true);
 
 function validateComment (value) {
-  return value.length <= MAXLENGTH;
+  return value.length <= MAX_LENGTH;
 }
 pristine.addValidator(commentsField, validateComment, 'Комментарий до 140 символов');
 
@@ -67,14 +70,11 @@ function validateHashtag (value) {
     value.trim();
     const arr = value.split(' ');
     const tempArr = [];
-    if (arr.length > HASHTAGCOUNT) {
+    if (arr.length > HASHTAG_COUNT) {
       res = false;
     }
     for (let i = 0; i < arr.length; i++){
-      if(hashtag.test(arr[i]) === false){
-        res = false;
-      }
-      if(tempArr.includes(arr[i].toLowerCase())){
+      if(hashtag.test(arr[i]) === false || tempArr.includes(arr[i].toLowerCase())){
         res = false;
       }
       else {
@@ -89,7 +89,7 @@ function getErrorMessage() {
   let errorMessage = '';
   const arr = hashtagField.value.toLowerCase().trim().split(/\s+/);
   const tempArr = [];
-  if (arr.length > HASHTAGCOUNT) {
+  if (arr.length > HASHTAG_COUNT) {
     errorMessage = 'Можно указать максимум 5 хэштегов';
   }
   for (let i = 0; i < arr.length; i++){
@@ -108,7 +108,7 @@ function getErrorMessage() {
 
 pristine.addValidator(hashtagField, validateHashtag, getErrorMessage);
 
-form.addEventListener('submit', (evt) => {
+function formHandler (evt) {
   evt.preventDefault();
   if (pristine.validate()) {
     blockButton();
@@ -128,12 +128,12 @@ form.addEventListener('submit', (evt) => {
       .finally(unblockButton());
     closeFullPhoto(overlayImg);
   }
-});
+}
 
-fileChooser.addEventListener('change', uploadFileHandler);
+uploadingImgInput.addEventListener('change', uploadFileHandler);
 
 function uploadFileHandler() {
-  const file = fileChooser.files[0];
+  const file = uploadingImgInput.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((extention) => fileName.endsWith(extention));
 

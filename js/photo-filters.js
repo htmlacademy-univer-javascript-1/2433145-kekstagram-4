@@ -1,4 +1,4 @@
-const SCALESTEP = 25;
+const SCALE_STEP = 25;
 const scaleSmallerBtn = document.querySelector('.scale__control--smaller');
 const scaleBiggerBtn = document.querySelector('.scale__control--bigger');
 const scaleInput = document.querySelector('.scale__control--value');
@@ -12,16 +12,16 @@ sliderContainer.parentNode.classList.add('hidden');
 
 scaleSmallerBtn.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue - SCALESTEP  >= 0) {
-    scaleInput.value = `${scaleInputValue - SCALESTEP}%`;
+  if (scaleInputValue - SCALE_STEP  > 0) {
+    scaleInput.value = `${scaleInputValue - SCALE_STEP}%`;
     imgPreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
 
 scaleBiggerBtn.addEventListener('click', () => {
   const scaleInputValue = Number(scaleInput.value.split('%')[0]);
-  if (scaleInputValue + SCALESTEP  <= 100) {
-    scaleInput.value = `${scaleInputValue + SCALESTEP}%`;
+  if (scaleInputValue + SCALE_STEP  <= 100) {
+    scaleInput.value = `${scaleInputValue + SCALE_STEP}%`;
     imgPreview.style.transform = `scale(${Number(scaleInput.value.split('%')[0])/100})`;
   }
 });
@@ -47,21 +47,29 @@ filterItems.forEach((filter) => {
     case 'none':
       filter.addEventListener('click', () => {
         sliderContainer.parentNode.classList.add('hidden');
-        filterName = 'none ';
+        imgPreview.style.filter = 'none';
       });
       break;
     case 'chrome':
       filter.addEventListener('click', () => {
         sliderContainer.parentNode.classList.remove('hidden');
         filterName = 'grayscale ';
-        sliderContainer.noUiSlider.updateOptions({ start: 1 });
+        sliderContainer.noUiSlider.updateOptions({
+          start: 1,
+          step: 0.1,
+          range: { 'min': 0, 'max': 1 }
+        });
       });
       break;
     case 'sepia':
       filter.addEventListener('click', () => {
         sliderContainer.parentNode.classList.remove('hidden');
         filterName = 'sepia ';
-        sliderContainer.noUiSlider.updateOptions({ start: 1 });
+        sliderContainer.noUiSlider.updateOptions({
+          start: 1,
+          step: 0.1,
+          range: { 'min': 0, 'max': 1 }
+        });
       });
       break;
     case 'marvin':

@@ -1,5 +1,5 @@
-import {openFullPhoto} from './openFullPhoto.js';
-import {sortPhotos} from './photosSort.js';
+import {openFullPhoto} from './open-full-photo.js';
+import {sortPhotos} from './photos-sort.js';
 import { debounce } from './util.js';
 
 const RERENDER_DELAY = 500;
